@@ -16,5 +16,5 @@ func TestKubectl_parseNamespaceResponse(t *testing.T) {
 	submatches, _ := parseNamespaceResponse(resp)
 	assert.Equal(t, 4, len(submatches))
 	assert.Equal(t, "default", submatches[0].Name)
-	assert.Equal(t, "3 Days 6 Hours", submatches[0].Age)
+	assert.Equal(t, Age{Days:3, Hours:6}, submatches[0].Age)
 }
