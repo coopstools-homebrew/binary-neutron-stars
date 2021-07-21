@@ -3,7 +3,6 @@ package kube
 import (
 	"fmt"
 	"os/exec"
-	"regexp"
 	"strings"
 	"time"
 )
@@ -23,7 +22,7 @@ type Age struct {
 	Hours	int `json:"hours"`
 }
 
-var jsonFormat = "jsonpath={range .items[*].metadata}[{.name},{.creationTimestamp},{.uuid}]{end}"
+var jsonFormat = "jsonpath=\"{range .items[*]}{.metadata.name}{'\\t'}{.metadata.creationTimestamp}{'\\n'}{end}\""
 
 func (ctl Kubectl) ListNamespaces() (parsed []Namespace, err error) {
 	var args []string
@@ -38,11 +37,10 @@ func (ctl Kubectl) ListNamespaces() (parsed []Namespace, err error) {
 }
 
 func parseNamespaceResponse(resp string) (parsed []Namespace, err error) {
-	re := regexp.MustCompile(`\[(.*?)]`)
-	submatches := re.FindAllStringSubmatch(resp, -1)
+	submatches := strings.Split(strings.TrimSpace(resp), "\n")
 	parsed = make([]Namespace, len(submatches), len(submatches))
     for i, submatch := range submatches {
-    	parts := strings.Split(submatch[1],",")
+    	parts := strings.Split(submatch,"\t")
     	age, err := parseAge(parts[1])
     	if err != nil { age = Age{} }
     	parsed[i] = Namespace{Name: parts[0], Created: parts[1], Age: age}

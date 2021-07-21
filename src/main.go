@@ -25,7 +25,7 @@ func main() {
 	handler = cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:*", "https://home.coopstools.com"},
 	}).Handler(handler)
-	addr := ":" + os.Args[1]
+	addr := ":" + args[1]
 	fmt.Println(addr)
 	err := http.ListenAndServe(addr, handler)
 	fmt.Println(err)
