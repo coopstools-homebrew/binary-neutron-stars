@@ -17,3 +17,10 @@ func TestKubectl_parseNamespaceResponse(t *testing.T) {
 	assert.Equal(t, "default", submatches[0].Name)
 	assert.Equal(t, Age{Days:3, Hours:6}, submatches[0].Age)
 }
+
+//func TestRealCll(t *testing.T) {
+//
+//	resp, err := Kubectl{Kubeconfig: "/Users/james.cooper/personal/homebrew/dev-environment-controller/.kube/config"}.ListNamespaces()
+//	assert.Nil(t, err)
+//	assert.Equal(t, "asdf", resp[0].Age)
+//}

@@ -1,7 +1,6 @@
 package kube
 
 import (
-	"fmt"
 	"github.com/pkg/errors"
 	"os/exec"
 	"strings"
@@ -23,7 +22,7 @@ type Age struct {
 	Hours	int `json:"hours"`
 }
 
-var jsonFormat = "jsonpath={range .items[*]}{.metadata.name}{'\\t'}{.metadata.creationTimestamp}{'\\n'}{end}"
+var jsonFormat = "jsonpath={range .items[*]}{.metadata.name}{\"\\t\"}{.metadata.creationTimestamp}{\"\\n\"}{end}"
 
 func (ctl Kubectl) ListNamespaces() (parsed []Namespace, err error) {
 	var args []string
@@ -50,11 +49,10 @@ func parseNamespaceResponse(resp string) (parsed []Namespace, err error) {
 }
 
 func parseAge(timeString string) (age Age, err error) {
-	layout := "2006-01-02T15:04:05.000Z"
+	layout := "2006-01-02T15:04:05Z"
 	t, err := time.Parse(layout, timeString)
 	if err != nil { return }
 	since := int(time.Now().UTC().Sub(t).Hours())
-	fmt.Println(timeString)
 	age = Age{Days: since / 24, Hours: since % 24}
 	return
 }
