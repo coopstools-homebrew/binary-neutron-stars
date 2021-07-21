@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/coopstools-homebrew/dev-environment-controller/kube"
+	"github.com/pkg/errors"
 	"github.com/rs/cors"
 	"net/http"
 	"os"
@@ -28,21 +29,21 @@ func main() {
 	addr := ":" + args[1]
 	fmt.Println(addr)
 	err := http.ListenAndServe(addr, handler)
-	fmt.Println(err)
+	fmt.Printf("%+v\n", errors.Wrap(err, "could not start server"))
 }
 
 func GetNamespaces(w http.ResponseWriter, r *http.Request) {
 	namespaces, err := k8sctl.ListNamespaces()
 	if err != nil {
 		w.WriteHeader(500)
-		fmt.Printf("\nServer error: %+v", err)
+		fmt.Printf("\nServer error getting namespaces: %+v", errors.WithStack(err))
 		fmt.Fprint(w, "Internal server error")
 		return
 	}
 	data, err := json.Marshal(namespaces)
 	if err != nil {
 		w.WriteHeader(500)
-		fmt.Printf("\nServer error: %+v", err)
+		fmt.Printf("\nServer error serializing namespaces: %+v", errors.WithStack(err))
 		fmt.Fprint(w, "Internal server error")
 		return
 	}

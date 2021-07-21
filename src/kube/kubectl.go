@@ -2,6 +2,7 @@ package kube
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	"os/exec"
 	"strings"
 	"time"
@@ -22,7 +23,7 @@ type Age struct {
 	Hours	int `json:"hours"`
 }
 
-var jsonFormat = "jsonpath=\"{range .items[*]}{.metadata.name}{'\\t'}{.metadata.creationTimestamp}{'\\n'}{end}\""
+var jsonFormat = "jsonpath={range .items[*]}{.metadata.name}{'\\t'}{.metadata.creationTimestamp}{'\\n'}{end}"
 
 func (ctl Kubectl) ListNamespaces() (parsed []Namespace, err error) {
 	var args []string
@@ -32,7 +33,7 @@ func (ctl Kubectl) ListNamespaces() (parsed []Namespace, err error) {
 	args = append(args, "-o", jsonFormat, "get", "namespaces")
 	cmd := exec.Command("kubectl", args...)
 	stdout, err := cmd.Output()
-	if err != nil { return parsed, err }
+	if err != nil { return parsed, errors.Wrap(err, "Kubectl command failed")}
 	return parseNamespaceResponse(string(stdout))
 }
 
