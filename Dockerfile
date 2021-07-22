@@ -11,4 +11,4 @@ FROM dtzar/helm-kubectl:3.6.3
 WORKDIR /home
 COPY --from=builder /app/api .
 
-CMD ./api $PORT
+CMD ./api $PORT $URL_PATH_PREFIX

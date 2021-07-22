@@ -10,18 +10,17 @@ import (
 	"os"
 )
 
-var k8sctl *kube.Kubectl
+var k8sctl = &kube.Kubectl{}
 
 func main() {
 	args := os.Args
+	prefix := ""
 	if len(args) > 2 {
-		k8sctl = &kube.Kubectl{Kubeconfig: args[2]}
-	} else {
-		k8sctl = &kube.Kubectl{}
+		prefix = "/" + args[2]
 	}
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", GetNamespaces)
+	mux.HandleFunc(prefix + "/", GetNamespaces)
 	handler := logRequestHandler(mux)
 	handler = cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:*", "https://home.coopstools.com"},
