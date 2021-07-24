@@ -15,4 +15,4 @@ I'm using a prebuilt tagging action that uses an angular standard syntax. A tag 
 
 `feat(pencil): ...` <- minor (non-breaking) change
 
-`perf(pencil): ...` <- major (breaking) change
+`break(pencil): ...` <- major (breaking) change

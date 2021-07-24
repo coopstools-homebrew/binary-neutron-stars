@@ -1,4 +1,4 @@
-module github.com/coopstools-homebrew/dev-environment-controller
+module github.com/coopstools-homebrew/binary-neutron-stars
 
 go 1.16
 

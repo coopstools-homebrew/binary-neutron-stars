@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/coopstools-homebrew/dev-environment-controller/kube"
+	"github.com/coopstools-homebrew/binary-neutron-stars/kube"
 	"github.com/pkg/errors"
 	"github.com/rs/cors"
 	"net/http"

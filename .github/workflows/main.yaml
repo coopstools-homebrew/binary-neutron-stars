@@ -15,11 +15,12 @@ jobs:
         id: tag_version
         uses: mathieudutour/github-tag-action@v5.5
         with:
+          custom_release_rules: "break:major,feat:minor,fix:patch"
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Push image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
-          image: binary-neutron-stars
+          image: ${{ github.event.repository.name }}
           tags: latest, ${{ steps.tag_version.outputs.new_tag }}
           registry: ghcr.io
           username: ${{ github.actor }}
