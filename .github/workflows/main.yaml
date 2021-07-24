@@ -19,7 +19,7 @@ jobs:
       - name: Push image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
-          image: ${{ github.repository }}
+          image: binary-neutron-stars
           tags: latest, ${{ steps.tag_version.outputs.new_tag }}
           registry: ghcr.io
           username: ${{ github.actor }}
